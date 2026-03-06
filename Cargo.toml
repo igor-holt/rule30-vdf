@@ -1,0 +1,15 @@
+[package]
+name = "rule30-vdf"
+version = "0.1.0"
+edition = "2021"
+authors = ["Igor Holt"]
+description = "Rule 30 VDF — STARK proof via Winterfell (ESF-2026-GEN-V3)"
+
+[dependencies]
+winterfell = "0.13"
+rand = "0.8"
+hex = "0.4"
+
+[[bin]]
+name = "rule30-vdf"
+path = "src/main.rs"
