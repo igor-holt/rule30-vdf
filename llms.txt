@@ -1,0 +1,17 @@
+# Rule30 VDF — Verifiable Delay Function
+
+> Rule 30 based Verifiable Delay Function implementation.
+> Cryptographic research by Igor Holt.
+
+## Technology
+- Cellular automata based VDF
+- Rule 30 implementation
+- Cryptographic verification
+
+## Genesis Conductor Integration
+- Used for temporal verification
+- Part of thermodynamic computing stack
+
+## Creator
+Igor Holt — AI Architect
+https://github.com/igor-holt
