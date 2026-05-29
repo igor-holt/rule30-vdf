@@ -1,0 +1,47 @@
+{
+  "$schema": "https://www.schemastore.org/schemas/json/claude-code-marketplace.json",
+  "name": "genesis-conductor-rule30-vdf",
+  "owner": {
+    "name": "Igor Holt (@invariantx)",
+    "email": "iholt@mymail.aacc.edu",
+    "url": "https://github.com/igor-holt"
+  },
+  "description": "Rule30 VDF — Rule 30 based Verifiable Delay Function cryptographic research implementation by Igor Holt (@invariantx) for Genesis Conductor thermodynamic computing stack. Cellular automata VDF providing temporal verification primitives, cryptographic proof, and energy-grounded timing for autonomous agent orchestration. Integrated with Genesis Conductor for verifiable compute, provenance sovereignty, and thermodynamic determinism patterns. Composes with OpenClaw skills, diamondNode attestation, and persistent state for long-horizon reliable agent execution and A2A coordination.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/igor-holt/rule30-vdf",
+  "keywords": [
+    "rule30-vdf",
+    "verifiable-delay-function",
+    "cellular-automata",
+    "cryptographic-research",
+    "genesis-conductor",
+    "igor-holt",
+    "invariantx",
+    "thermodynamic-computing",
+    "temporal-verification",
+    "proof-of-work-alternative",
+    "agent-orchestration",
+    "openclaw",
+    "diamondnode",
+    "claude-code-marketplace",
+    "energy-aware-compute",
+    "provenance"
+  ],
+  "plugins": [
+    {
+      "name": "rule30-vdf",
+      "source": "https://github.com/igor-holt/rule30-vdf",
+      "description": "Rust implementation of Rule 30 cellular automata as cryptographic Verifiable Delay Function for Genesis Conductor temporal verification and thermodynamic stack. Provides hash-chain timing guarantees and composes with attestation surfaces (diamondNode) and persistent memory skills.",
+      "version": "1.0.0",
+      "tags": ["vdf", "cryptography", "thermodynamic", "genesis-conductor", "rust"],
+      "category": "research",
+      "homepage": "https://github.com/igor-holt/rule30-vdf",
+      "keywords": ["rule 30 vdf", "cellular automata verifiable delay", "genesis conductor thermodynamic verification", "cryptographic temporal primitives for agents"]
+    }
+  ],
+  "links": {
+    "x": "https://x.com/invariantx",
+    "website": "https://genesisconductor.io",
+    "github": "https://github.com/igor-holt/rule30-vdf"
+  }
+}
