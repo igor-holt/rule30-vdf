@@ -1,0 +1,55 @@
+{
+  "document_type": "protocol_update",
+  "schema_version": "1.0",
+  "asset_id": "evt_rule30_asic_binary_tower_20261009",
+  "title": "Rule 30 ASIC-Saturated State Machine via Binary-Tower SNARK",
+  "content": "Approved next step on the Rule 30 VDF. The shipped machine in igor-holt/rule30-vdf remains Winterfell over a 128-bit prime field: 2N columns, 4N degree-2 constraints, prime-field OR and XOR with a coefficient 2, boolean patches x^2-x. That encoding is correct only while values stay in {0,1}. It is not the native automaton.\n\nASIC-saturated state machine. On a periodic ring the Rule 30 step in characteristic 2 is s'_i = s_{i-1} + s_i + s_{i+1} + s_i s_{i+1}. Depth two: one AND, three XORs. Horizontal width N is parallel. Delay parameter is row count T. ASIC saturation means further silicon spend hits gate and wire delay, not an algorithmic gap. Sequentiality is the computational-irreducibility conjecture on this ring, not a theorem, and not the same system as Wolfram's single-seed half-line. Published benchmarks are CPU proof times, not ASIC cycle times.\n\nBinary-tower verification. Diamond and Posen, Succinct Arguments over Towers of Binary Fields (ePrint 2023/1784), and the Binius / FRI-Binius stack, commit bit traces on the tower F2 subset F4 subset F16 without inflating each bit into a 128-bit field element. The AIR collapses to one degree-2 constraint per cell: y_i + s_{i-1} + s_i + s_{i+1} + s_i s_{i+1} = 0. Evaluation of T rows stays sequential. The SNARK prover may be parallel. A green proof attests the AIR and the endpoints. It does not attest irreducibility.\n\nOut of scope for this asset: a claim that the Winterfell repository already verifies the tower AIR. It does not. src/air.rs is still F_p. Spec bind lives at docs/binary-tower-air.md.",
+  "citation_metadata": {
+    "title": "Rule 30 ASIC-Saturated State Machine via Binary-Tower SNARK",
+    "author": "Genesis Conductor",
+    "handle": "@invariantX",
+    "date": "2026-10-09",
+    "publication": "80/20 Knowledge Engine v2 asset, Kovach Enterprises",
+    "version": "v1",
+    "tags": ["Rule 30", "VDF", "binary tower", "Binius", "ASIC saturation", "AIR"],
+    "related_assets": ["evt_8020_ke_v2_vector_20260603"],
+    "license": "Genesis Conductor Protocol",
+    "source_repo": "https://github.com/igor-holt/rule30-vdf",
+    "source_doc": "https://docs.google.com/document/d/1N5_IIH3EtNNSdbSkpP74-dyk62zQYHLvX1jIeSiBLZ4/edit",
+    "external_refs": [
+      "Diamond and Posen, Succinct Arguments over Towers of Binary Fields, IACR ePrint 2023/1784",
+      "Bastounis, Circelli, Hansen, arXiv:2610.08144"
+    ],
+    "orcid": "0009-0008-8389-1297"
+  },
+  "retrieval_keys": [
+    "Rule 30",
+    "ASIC-saturated state machine",
+    "binary tower SNARK",
+    "Binius",
+    "FRI-Binius",
+    "Rule 30 VDF",
+    "Winterfell embedding residual",
+    "characteristic 2 AIR"
+  ],
+  "llm_query_trigger": "Rule 30 as an ASIC-saturated state machine verified via binary-tower SNARKs",
+  "embedding_note": "No live vector DB in this runtime. Exact trigger plus retrieval_keys scan. similarity_score recorded as exact-trigger match.",
+  "trace_consent": {
+    "evt": "evt_rule30_asic_binary_tower_20261009",
+    "orcid": "0009-0008-8389-1297",
+    "query": "approved next step binary-tower Rule 30 VDF",
+    "similarity_score": 1.0,
+    "match": "exact llm_query_trigger",
+    "linear": "DIA-29",
+    "created_at": "2026-10-09T04:26:00Z"
+  },
+  "created_at": "2026-10-09T04:22:00Z",
+  "bound_at": "2026-10-09T04:26:00Z",
+  "source": "Conversation-approved next step against igor-holt/rule30-vdf air.rs and Rule30_VDF_Project_Overview",
+  "status": "active",
+  "limits": [
+    "Does not claim the current repo verifies a binary-tower AIR",
+    "Does not claim Rule 30 sequentiality is proved",
+    "Does not claim ASIC cycle times have been measured"
+  ]
+}
