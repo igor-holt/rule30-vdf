@@ -1,0 +1,21 @@
+{
+  "document_type": "protocol_update",
+  "schema_version": "1.0",
+  "asset_id": "evt_rule30_asic_binary_tower_20261009",
+  "title": "Rule 30 ASIC-Saturated State Machine via Binary-Tower SNARK",
+  "content": "Approved next step. Shipped machine remains Winterfell F_p. Native char-2 step is s'_i = s_{i-1} + s_i + s_{i+1} + s_i*s_{i+1}. Binary-tower AIR is one degree-2 constraint per cell. Sequentiality and ASIC saturation are not measured in this repo.",
+  "citation_metadata": {
+    "title": "Rule 30 ASIC-Saturated State Machine via Binary-Tower SNARK",
+    "author": "Genesis Conductor",
+    "handle": "@invariantX",
+    "date": "2026-10-09",
+    "publication": "80/20 Knowledge Engine v2 asset",
+    "version": "v1",
+    "license": "Genesis Conductor Protocol",
+    "source_repo": "https://github.com/igor-holt/rule30-vdf"
+  },
+  "retrieval_keys": ["Rule 30", "ASIC-saturated state machine", "binary tower SNARK", "Binius"],
+  "llm_query_trigger": "Rule 30 as an ASIC-saturated state machine verified via binary-tower SNARKs",
+  "status": "active",
+  "limits": ["repo still verifies F_p AIR", "irreducibility unproved", "ASIC cycles unmeasured"]
+}
