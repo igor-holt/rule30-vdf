@@ -3,10 +3,11 @@
 # podman build -t rule30-vdf -f Containerfile .
 # podman run --rm rule30-vdf
 # =============================================================================
-FROM docker.io/library/rust:1.77-slim AS builder
+# Winterfell 0.13 requires Rust 1.87 or newer.
+FROM docker.io/library/rust:1.91-slim AS builder
 
 WORKDIR /build
-COPY Cargo.toml ./
+COPY Cargo.toml Cargo.lock ./
 COPY src/ ./src/
 
 RUN cargo build --release

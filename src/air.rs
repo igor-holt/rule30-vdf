@@ -42,15 +42,17 @@ impl Air for Rule30Air {
     fn new(trace_info: TraceInfo, pub_inputs: Self::PublicInputs, options: ProofOptions) -> Self {
         let n = pub_inputs.num_cells;
 
-        // 4*N transition constraints, each degree 2:
+        // 4*N degree-2 Rule 30 constraints, plus one degree-1 row-index constraint.
         //   N  boolean on x_i
         //   N  boolean on w_i
         //   N  OR gate
         //   N  XOR transition
-        let degrees: Vec<TransitionConstraintDegree> =
-            vec![TransitionConstraintDegree::new(2); 4 * n];
+        //   1  t' = t + 1
+        let mut degrees = vec![TransitionConstraintDegree::new(2); 4 * n];
+        degrees.push(TransitionConstraintDegree::new(1));
 
-        let context = AirContext::new(trace_info, degrees, 2 * n, options);
+        // 2*N endpoint assertions on x, plus t_0 = 0.
+        let context = AirContext::new(trace_info, degrees, 2 * n + 1, options);
 
         Self {
             context,
@@ -64,7 +66,7 @@ impl Air for Rule30Air {
         &self.context
     }
 
-    /// Evaluate all 4*N transition constraints on the given frame.
+    /// Evaluate the Rule 30 transition constraints and the row-index constraint.
     fn evaluate_transition<E: FieldElement<BaseField = Self::BaseField>>(
         &self,
         frame: &EvaluationFrame<E>,
@@ -95,13 +97,18 @@ impl Air for Rule30Air {
             // AIR-15: P_xor = y_i - (x_left + w_i - 2 * x_left * w_i)
             result[3 * n + i] = y_i - (x_left + w_i - two * x_left * w_i);
         }
+
+        // Row index advances by one. This column is also what keeps the DEEP
+        // composition polynomial at full degree when the Rule 30 state is constant.
+        let row_index = 2 * n;
+        result[4 * n] = next[row_index] - (current[row_index] + E::ONE);
     }
 
     /// Boundary assertions: pin initial and final states.
     fn get_assertions(&self) -> Vec<Assertion<Self::BaseField>> {
         let n = self.num_cells;
         let last_step = self.trace_length() - 1;
-        let mut assertions = Vec::with_capacity(2 * n);
+        let mut assertions = Vec::with_capacity(2 * n + 1);
 
         for i in 0..n {
             // First row: x_i = init_state[i]
@@ -109,6 +116,7 @@ impl Air for Rule30Air {
             // Last row: x_i = final_state[i]
             assertions.push(Assertion::single(i, last_step, self.final_state[i]));
         }
+        assertions.push(Assertion::single(2 * n, 0, Self::BaseField::ZERO));
 
         assertions
     }

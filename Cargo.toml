@@ -2,7 +2,9 @@
 name = "rule30-vdf"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.87"
 authors = ["Igor Holt"]
+license = "MIT OR Apache-2.0"
 description = "Rule 30 VDF — STARK proof via Winterfell (ESF-2026-GEN-V3)"
 
 [dependencies]
@@ -10,6 +12,14 @@ winterfell = "0.13"
 rand = "0.8"
 hex = "0.4"
 
+[profile.test]
+# STARK proving is unusable in debug builds. Keep assertions, optimize the code.
+opt-level = 3
+
 [[bin]]
 name = "rule30-vdf"
 path = "src/main.rs"
+
+[[bench]]
+name = "readme_table"
+harness = false

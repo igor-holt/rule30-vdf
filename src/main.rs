@@ -36,8 +36,11 @@ fn main() {
     println!("=== Rule 30 VDF — STARK Proof (ESF-2026-GEN-V3) ===");
     println!("  Cells (N)     : {num_cells}");
     println!("  Steps (T)     : {num_steps}");
-    println!("  Trace width   : {} columns", 2 * num_cells);
-    println!("  Constraints   : {} (4*N, all degree 2)", 4 * num_cells);
+    println!("  Trace width   : {} columns", 2 * num_cells + 1);
+    println!(
+        "  Constraints   : {} (4*N degree-2 Rule 30, plus a row index)",
+        4 * num_cells + 1
+    );
     println!();
 
     // Initial state: single 1-bit at center (classic Rule 30 seed)
@@ -55,7 +58,13 @@ fn main() {
     let expected = rule30_plain(&init, num_steps - 1);
     let expected_fe: Vec<BaseElement> = expected
         .iter()
-        .map(|&b| if b != 0 { BaseElement::ONE } else { BaseElement::ZERO })
+        .map(|&b| {
+            if b != 0 {
+                BaseElement::ONE
+            } else {
+                BaseElement::ZERO
+            }
+        })
         .collect();
     assert_eq!(
         final_state, expected_fe,
@@ -66,7 +75,13 @@ fn main() {
     // --- Generate STARK proof ---
     let init_fe: Vec<BaseElement> = init
         .iter()
-        .map(|&b| if b != 0 { BaseElement::ONE } else { BaseElement::ZERO })
+        .map(|&b| {
+            if b != 0 {
+                BaseElement::ONE
+            } else {
+                BaseElement::ZERO
+            }
+        })
         .collect();
 
     let pub_inputs = Rule30PublicInputs {
@@ -80,9 +95,7 @@ fn main() {
 
     println!("[2/4] Generating STARK proof...");
     let t1 = Instant::now();
-    let proof = prover
-        .prove_trace(trace)
-        .expect("proof generation failed");
+    let proof = prover.prove_trace(trace).expect("proof generation failed");
     let prove_time = t1.elapsed();
     println!("      Proof generated in {:.3}s", prove_time.as_secs_f64());
     println!("      Proof size: {} bytes", proof.to_bytes().len());
@@ -96,9 +109,18 @@ fn main() {
 
     // --- Summary ---
     println!("[4/4] Summary");
-    println!("      Sequential work (T={num_steps}): {:.3}s", trace_time.as_secs_f64());
-    println!("      Proof generation             : {:.3}s", prove_time.as_secs_f64());
-    println!("      Verification                 : {:.3}s", verify_time.as_secs_f64());
+    println!(
+        "      Sequential work (T={num_steps}): {:.3}s",
+        trace_time.as_secs_f64()
+    );
+    println!(
+        "      Proof generation             : {:.3}s",
+        prove_time.as_secs_f64()
+    );
+    println!(
+        "      Verification                 : {:.3}s",
+        verify_time.as_secs_f64()
+    );
     println!();
     println!("  Final state hash (first 8 cells):");
     print!("    ");

@@ -11,14 +11,17 @@ Linear: DIA-29.
 - Does not claim Rule 30 sequentiality is proved.
 - Does not claim ASIC cycle times have been measured. Published numbers are CPU proof times.
 
-## Shipped machine (unchanged)
+## Shipped machine
 
-Winterfell over a 128-bit prime field. Width `N`, `2N` columns, `4N` degree-2 constraints:
+Winterfell over a 128-bit prime field. Width `N`, `2N + 1` columns, `4N` degree-2 constraints plus one degree-1 row-index constraint:
 
 - boolean on the cell: `x^2 - x`
 - boolean on the OR witness: `w^2 - w`
 - prime-field OR: `w - (x + x_right - x * x_right)`
 - prime-field XOR: `y - (x_left + w - 2 * x_left * w)`
+- row index: `t' = t + 1`, with `t_0 = 0`
+
+The row index is a degree anchor. Without it, a constant Rule 30 trace (all zeros, or the two-cell fixed point `10`) makes Winterfell's DEEP composition polynomial drop below degree `T - 2` and the prover panics.
 
 Correct only while values stay in `{0,1}`. The coefficient `2` is a characteristic artifact.
 
