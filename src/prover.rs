@@ -3,17 +3,16 @@
 // Winterfell 0.13.1 API.
 // =============================================================================
 
+use winterfell::matrix::ColMatrix;
+use winterfell::AuxRandElements;
 use winterfell::{
     crypto::{hashers::Blake3_256, DefaultRandomCoin, MerkleTree},
     math::{fields::f128::BaseElement, FieldElement},
     AcceptableOptions, BatchingMethod, CompositionPoly, CompositionPolyTrace,
-    ConstraintCompositionCoefficients, DefaultConstraintCommitment,
-    DefaultConstraintEvaluator, DefaultTraceLde, FieldExtension, PartitionOptions,
-    ProofOptions, Prover, StarkDomain, StarkProof, Trace, TraceInfo, TracePolyTable,
-    TraceTable,
+    ConstraintCompositionCoefficients, DefaultConstraintCommitment, DefaultConstraintEvaluator,
+    DefaultTraceLde, FieldExtension, PartitionOptions, Proof, ProofOptions, Prover, StarkDomain,
+    TraceInfo, TracePolyTable, TraceTable,
 };
-use winterfell::matrix::ColMatrix;
-use winterfell::AuxRandElements;
 
 use crate::air::{Rule30Air, Rule30PublicInputs};
 
@@ -32,10 +31,7 @@ impl Rule30Prover {
         }
     }
 
-    pub fn prove_trace(
-        &self,
-        trace: TraceTable<BaseElement>,
-    ) -> Result<StarkProof, String> {
+    pub fn prove_trace(&self, trace: TraceTable<BaseElement>) -> Result<Proof, String> {
         Prover::prove(self, trace).map_err(|e| format!("proof generation failed: {e}"))
     }
 }
@@ -99,10 +95,7 @@ impl Prover for Rule30Prover {
 
 // -- Verification wrapper -----------------------------------------------------
 
-pub fn verify_proof(
-    proof: StarkProof,
-    pub_inputs: Rule30PublicInputs,
-) -> Result<(), String> {
+pub fn verify_proof(proof: Proof, pub_inputs: Rule30PublicInputs) -> Result<(), String> {
     let acceptable = AcceptableOptions::MinConjecturedSecurity(96);
     winterfell::verify::<
         Rule30Air,
@@ -116,14 +109,42 @@ pub fn verify_proof(
 // -- Default proof options (8-arg form, 0.13 API) -----------------------------
 
 pub fn default_proof_options() -> ProofOptions {
+    // Winterfell's conjectured-security estimator is
+    // `min(field_bits, queries * log2(blowup) + grinding) - 1`, capped by hash
+    // collision resistance. 32 queries at blowup 8 estimate 95 bits, and
+    // `verify_proof` rejects anything under 96. 33 queries estimate 98 bits.
     ProofOptions::new(
-        32,                        // num_queries
-        8,                         // blowup_factor
-        0,                         // grinding_factor
-        FieldExtension::None,      // field_extension
-        8,                         // FRI folding factor
-        31,                        // FRI max remainder poly degree
-        BatchingMethod::Linear,    // composition polynomial batching
-        BatchingMethod::Linear,    // DEEP polynomial batching
+        33,                     // num_queries
+        8,                      // blowup_factor
+        0,                      // grinding_factor
+        FieldExtension::None,   // field_extension
+        8,                      // FRI folding factor
+        31,                     // FRI max remainder poly degree
+        BatchingMethod::Linear, // composition polynomial batching
+        BatchingMethod::Linear, // DEEP polynomial batching
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::default_proof_options;
+
+    /// Mirrors `ConjecturedSecurity::compute` in Winterfell 0.13 for this
+    /// 128-bit field and BLAKE3-256 (128-bit collision resistance).
+    #[test]
+    fn default_options_clear_the_96_bit_verifier_floor() {
+        let options = default_proof_options();
+        let mut query_security =
+            options.blowup_factor().ilog2() * u32::try_from(options.num_queries()).unwrap();
+        if query_security >= 80 {
+            query_security += options.grinding_factor();
+        }
+        let field_security = 128 * options.field_extension().degree();
+        let bits = std::cmp::min(std::cmp::min(field_security, query_security) - 1, 128);
+        assert!(
+            bits >= 96,
+            "conjectured security {bits} is below verify_proof's floor of 96"
+        );
+        assert_eq!(bits, 98);
+    }
 }
