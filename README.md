@@ -2,10 +2,11 @@
 
 > **A Verifiable Delay Function Built on Cellular Automata and Zero-Knowledge Proofs**
 
-**Principal Investigator:** Igor Holt  
+**Author:** Igor Holt, Founder of Kovach Enterprises (2015) and Genesis Conductor (started 2025)  
 **Organization:** Kovach Enterprises / Genesis Conductor  
+**Location:** Pasadena, Maryland, USA  
 **Date:** March 2026 (Updated November 2026)  
-**Status:** Working MVP • Tested • Benchmarked
+**Status:** Working, tested, unaudited research prototype
 
 [![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![STARKs](https://img.shields.io/badge/STARKs-Winterfell-6E44FF?style=for-the-badge)](https://github.com/winterfell)
@@ -158,10 +159,9 @@ This VDF is a working research prototype: it builds, proves, and verifies. The n
 
 **Contact:**  
 Igor Holt  
-Principal Investigator  
+Founder, Kovach Enterprises / Genesis Conductor  
 igor@kovachenterprises.com  
-Kovach Enterprises / Genesis Conductor (NSF Award #2530747)  
-Green Haven, Maryland, USA
+Pasadena, Maryland, USA
 
 **Alignment:**  
 - Sovereign AI orchestration & multi-agent systems  
