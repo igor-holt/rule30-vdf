@@ -33,7 +33,7 @@ Rule 30 is deceptively simple to describe yet produces patterns of such irreduci
 ## 🚀 Why This Matters
 
 ### For Blockchain Networks
-Ethereum and other chains need **unmanipulable randomness**. VDFs are the gold-standard solution because they enforce a minimum passage of time before a value is revealed. Our implementation is positioned for the **Ethereum Foundation Ecosystem Support Program (ESP)** grants ($50,000–$100,000 range).
+Ethereum and other chains need **unmanipulable randomness**. VDFs are the gold-standard solution because they enforce a minimum passage of time before a value is revealed. This is an independent, open-source construction; it has no Ethereum Foundation funding or endorsement.
 
 ### For Cryptography & Security
 Any system requiring **provable time-locks** benefits:
@@ -87,7 +87,7 @@ Regenerate the table with `cargo bench --bench readme_table`. Numbers move from 
 
 This project is designed as a **foundational revenue stream** within a diversified financial infrastructure:
 
-1. **Ethereum Foundation ESP Grant** — $50K–$100K (immediate target; funds audit + hardening)
+1. **Independent security audit funding** — to be determined (no Ethereum Foundation funding sought or received; funds audit + hardening)
 2. **Wolfram Foundation Rule 30 Prizes** — Up to $30K (longer-term research leverage)
 3. **Enterprise Licensing** — Verifiable time-lock infrastructure for auctions, lotteries, timestamping services, and decentralized AI coordination layers
 4. **Future Integration** — Sovereign AI orchestration platforms, post-quantum secure randomness beacons, and hybrid human-AI trust primitives
@@ -126,7 +126,7 @@ A trace of T rows (the "delay steps" in the table, and `RULE30_STEPS` on the CLI
 2. **Cairo / Starknet verifier** — Implement this AIR in Cairo so a Starknet contract can verify the proof on-chain. This is the verifier path for a Starknet Seed Grant.
 3. **Solidity Verifier** — On-chain verification contract for Ethereum mainnet
 4. **Performance Optimization** — GPU acceleration + AVX-512 intrinsics to push prover to hardware limits
-5. **Grant Submission** — Starknet Seed Grant, plus an Ethereum Foundation ESP package, each with the working prover, tests, and the benchmark harness
+5. **Grant submissions** — Starknet Seed Grant package with working prover, tests, and benchmark harness (no ESP submission pending)
 6. **Mainnet Integration** — Deploy as infrastructure for randomness beacons and decentralized sequencer initiatives
 7. **Cross-Chain Expansion** — Solana, Base, and sovereign AI orchestration layers (Genesis Conductor alignment)
 
