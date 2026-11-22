@@ -11,10 +11,16 @@ use winterfell::{
 
 // -- Public inputs: initial state + claimed final state ----------------------
 
+/// Public inputs of a proof: the seed, the claimed final state and the ring size.
+///
+/// Both states hold one field element per cell, each `0` or `1`.
 #[derive(Clone, Debug)]
 pub struct Rule30PublicInputs {
+    /// Ring state in the first trace row (the seed).
     pub init_state: Vec<BaseElement>,
+    /// Ring state in the last trace row (the VDF output).
     pub final_state: Vec<BaseElement>,
+    /// Number of cells `N` on the periodic ring.
     pub num_cells: usize,
 }
 
@@ -28,6 +34,8 @@ impl ToElements<BaseElement> for Rule30PublicInputs {
 
 // -- AIR struct ---------------------------------------------------------------
 
+/// AIR for Rule 30 on a periodic ring of `num_cells` cells, over Winterfell's
+/// 128-bit prime field.
 pub struct Rule30Air {
     context: AirContext<BaseElement>,
     init_state: Vec<BaseElement>,

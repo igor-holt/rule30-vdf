@@ -10,7 +10,7 @@
 
 [![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![STARKs](https://img.shields.io/badge/STARKs-Winterfell-6E44FF?style=for-the-badge)](https://github.com/winterfell)
-[![License](https://img.shields.io/badge/License-MIT%2FApache-blue?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT%2FApache-blue?style=for-the-badge)](#-license)
 [![Quantum resistance](https://img.shields.io/badge/Quantum%20resistance-STARK%20hash%20assumptions-blue?style=for-the-badge)](#security-assumptions--limitations)
 
 ---
@@ -174,7 +174,7 @@ Pasadena, Maryland, USA
 
 ## 📜 License
 
-Dual-licensed under MIT OR Apache-2.0. See [LICENSE](LICENSE), [LICENSE-MIT](LICENSE-MIT), and [LICENSE-APACHE](LICENSE-APACHE).
+Dual-licensed under MIT OR Apache-2.0, at your option. See [LICENSE-MIT](LICENSE-MIT) and [LICENSE-APACHE](LICENSE-APACHE).
 
 ---
 
