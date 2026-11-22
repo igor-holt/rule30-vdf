@@ -9,8 +9,11 @@ FROM docker.io/library/rust:1.91-slim AS builder
 WORKDIR /build
 COPY Cargo.toml Cargo.lock ./
 COPY src/ ./src/
+# Cargo.toml declares a [[bench]] target, and Cargo validates it even for a
+# plain `cargo build`, so the benches directory has to be in the build context.
+COPY benches/ ./benches/
 
-RUN cargo build --release
+RUN cargo build --release --locked
 
 # -- Runtime stage (minimal) --------------------------------------------------
 FROM docker.io/library/debian:bookworm-slim

@@ -1,0 +1,81 @@
+name: Release
+
+# Publishes the crate to crates.io when a version tag is pushed.
+# Setup, and the manual first release, are described in RELEASING.md.
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+*"]
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  verify:
+    name: verify the tag, test, package
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.index.outputs.published }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Tag, Cargo.toml and CITATION.cff agree on the version
+        id: version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          metadata="$(cargo metadata --no-deps --locked --format-version 1)"
+          name="$(jq -r '.packages[0].name' <<<"$metadata")"
+          crate="$(jq -r '.packages[0].version' <<<"$metadata")"
+          cff="$(sed -n 's/^version: *//p' CITATION.cff | tr -d "\"'")"
+          echo "tag=$tag Cargo.toml=$crate CITATION.cff=$cff"
+          test "$tag" = "$crate"
+          test "$tag" = "$cff"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "version=$crate" >> "$GITHUB_OUTPUT"
+      - name: Test
+        run: cargo test --release --locked
+      - name: Build the crate from its package
+        run: cargo package --locked
+      - name: Check whether this version is already on crates.io
+        id: index
+        env:
+          NAME: ${{ steps.version.outputs.name }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # Sparse index path for a name of four or more characters:
+          # first two characters, next two, then the name.
+          url="https://index.crates.io/${NAME:0:2}/${NAME:2:2}/${NAME}"
+          status="$(curl -sS -o index.jsonl -w '%{http_code}' "$url")"
+          if [ "$status" = "200" ] && jq -e --arg v "$VERSION" 'select(.vers == $v)' index.jsonl > /dev/null; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::$NAME $VERSION is already on crates.io, so the publish job is skipped."
+          elif [ "$status" = "200" ] || [ "$status" = "404" ]; then
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::The crates.io index answered HTTP $status for $url"
+            exit 1
+          fi
+
+  publish:
+    name: publish to crates.io
+    needs: verify
+    if: needs.verify.outputs.published != 'true'
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write # traded for a crates.io token that lasts for this job
+    steps:
+      # This job can publish. Its actions are pinned to commits, and it uses
+      # the Rust toolchain that ships with the runner image.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: rust-lang/crates-io-auth-action@3268eb413133e2960fa4ae0e963ca76380c54cd9 # v1.0.6
+        id: auth
+      - name: Publish
+        run: cargo publish --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}

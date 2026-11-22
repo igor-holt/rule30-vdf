@@ -18,12 +18,14 @@ use crate::air::{Rule30Air, Rule30PublicInputs};
 
 // -- Prover -------------------------------------------------------------------
 
+/// Winterfell prover for [`Rule30Air`].
 pub struct Rule30Prover {
     options: ProofOptions,
     pub_inputs: Rule30PublicInputs,
 }
 
 impl Rule30Prover {
+    /// Creates a prover for the given proof options and public inputs.
     pub fn new(options: ProofOptions, pub_inputs: Rule30PublicInputs) -> Self {
         Self {
             options,
@@ -31,6 +33,8 @@ impl Rule30Prover {
         }
     }
 
+    /// Generates a STARK proof for a trace built by
+    /// [`build_trace`](crate::trace::build_trace).
     pub fn prove_trace(&self, trace: TraceTable<BaseElement>) -> Result<Proof, String> {
         Prover::prove(self, trace).map_err(|e| format!("proof generation failed: {e}"))
     }
@@ -95,6 +99,10 @@ impl Prover for Rule30Prover {
 
 // -- Verification wrapper -----------------------------------------------------
 
+/// Verifies `proof` against `pub_inputs`.
+///
+/// Proofs whose options give fewer than 96 bits of conjectured security are
+/// rejected.
 pub fn verify_proof(proof: Proof, pub_inputs: Rule30PublicInputs) -> Result<(), String> {
     let acceptable = AcceptableOptions::MinConjecturedSecurity(96);
     winterfell::verify::<
@@ -108,6 +116,9 @@ pub fn verify_proof(proof: Proof, pub_inputs: Rule30PublicInputs) -> Result<(), 
 
 // -- Default proof options (8-arg form, 0.13 API) -----------------------------
 
+/// Proof options used by the CLI, the tests and the benchmark: 33 queries,
+/// blowup factor 8, no grinding and no field extension. Winterfell's estimator
+/// gives 98 bits of conjectured security for this set.
 pub fn default_proof_options() -> ProofOptions {
     // Winterfell's conjectured-security estimator is
     // `min(field_bits, queries * log2(blowup) + grinding) - 1`, capped by hash

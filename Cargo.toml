@@ -5,7 +5,25 @@ edition = "2021"
 rust-version = "1.87"
 authors = ["Igor Holt"]
 license = "MIT OR Apache-2.0"
-description = "Rule 30 VDF — STARK proof via Winterfell (ESF-2026-GEN-V3)"
+description = "Verifiable delay function on the Rule 30 cellular automaton with STARK proofs via Winterfell (schema ESF-2026-GEN-V3)"
+repository = "https://github.com/igor-holt/rule30-vdf"
+readme = "README.md"
+keywords = ["vdf", "verifiable-delay", "stark", "rule30", "cellular-automaton"]
+categories = ["cryptography", "mathematics"]
+# Publish only what a user of the crate needs. Container files, repository
+# tooling and discovery manifests stay out of the package.
+include = [
+    "/src/**",
+    "/tests/**",
+    "/benches/**",
+    "/docs/**",
+    "/artifacts/benchmark.csv",
+    "/artifacts/benchmark.md",
+    "/README.md",
+    "/CITATION.cff",
+    "/LICENSE-MIT",
+    "/LICENSE-APACHE",
+]
 
 [dependencies]
 winterfell = "0.13"

@@ -1,6 +1,6 @@
 # Rule 30 VDF
 
-> **A Verifiable Delay Function Built on Cellular Automata and Zero-Knowledge Proofs**
+> **A Verifiable Delay Function Built on Cellular Automata and STARK Proofs**
 
 **Author:** Igor Holt, Founder of Kovach Enterprises (2015) and Genesis Conductor (started 2025)  
 **Organization:** Kovach Enterprises / Genesis Conductor  
@@ -9,8 +9,8 @@
 **Status:** Working, tested, unaudited research prototype
 
 [![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
-[![STARKs](https://img.shields.io/badge/STARKs-Winterfell-6E44FF?style=for-the-badge)](https://github.com/winterfell)
-[![License](https://img.shields.io/badge/License-MIT%2FApache-blue?style=for-the-badge)](LICENSE)
+[![STARKs](https://img.shields.io/badge/STARKs-Winterfell-6E44FF?style=for-the-badge)](https://github.com/meta/winterfell)
+[![License](https://img.shields.io/badge/License-MIT%2FApache-blue?style=for-the-badge)](#-license)
 [![Quantum resistance](https://img.shields.io/badge/Quantum%20resistance-STARK%20hash%20assumptions-blue?style=for-the-badge)](#security-assumptions--limitations)
 
 ---
@@ -25,8 +25,6 @@ Imagine hiring someone to solve a complex math problem that takes an hour. When 
 This is a **Verifiable Delay Function (VDF)** — and we built it on **Rule 30**, Stephen Wolfram’s iconic cellular automaton from the 1980s.
 
 Rule 30 is deceptively simple to describe yet produces patterns of such irreducible complexity that, after 40+ years of study, **no one has found a shortcut** to predict its evolution without executing every single step. This property makes it an ideal foundation for time-delay cryptography.
-
-> **May 2026 Timing:** Stephen Wolfram’s recent CIMCAI presentation on computational irreducibility powerfully reinforces why Rule 30 is the perfect primitive. As Wolfram emphasized, complex systems obeying simple rules cannot be reduced to predictive shortcuts — exactly the hardness assumption our VDF relies upon.
 
 ---
 
@@ -43,7 +41,7 @@ Any system requiring **provable time-locks** benefits:
 - Decentralized sequencers and randomness beacons
 
 ### For Mathematics
-Rule 30 is the subject of **three open $10,000 prizes** from the Wolfram Foundation. Our algebraic decomposition framework opens new research avenues toward resolving these long-standing questions.
+Rule 30 is the subject of **three open $10,000 prizes** from the Wolfram Foundation.
 
 ---
 
@@ -79,7 +77,7 @@ Regenerate the table with `cargo bench --bench readme_table`. Numbers move from 
 | **Hardness Assumption**    | Computational irreducibility conjecture | Factoring / group order assumptions     |
 | **Implementation**         | Rust, containerized, unaudited      | Varies                                     |
 
-> **Security Note:** All VDFs rely on unproven mathematical assumptions. Rule 30’s assumption has 40 years of empirical validation — comparable to RSA’s factoring assumption that secures global banking.
+> **Security Note:** All VDFs rely on unproven mathematical assumptions. See [Security assumptions & limitations](#security-assumptions--limitations) for what this one rests on.
 
 ---
 
@@ -98,7 +96,7 @@ This project is designed as a **foundational revenue stream** within a diversifi
 
 ## 🛠 Technical Summary
 
-- **Language:** Rust (memory-safe, high-performance, aerospace/finance grade)
+- **Language:** Rust (memory-safe)
 - **Language requirement:** Rust 1.87+ (Winterfell 0.13.1)
 - **Proof System:** STARKs via open-source Winterfell 0.13
 - **Field:** 128-bit prime field
@@ -123,7 +121,7 @@ A trace of T rows (the "delay steps" in the table, and `RULE30_STEPS` on the CLI
 ## 🗺️ Roadmap & Next Steps
 
 1. **Security Audit** — Engage Trail of Bits, OtterSec, or equivalent for formal cryptographic review
-2. **Cairo / Starknet verifier** — Implement this AIR in Cairo so a Starknet contract can verify the proof on-chain. This is the verifier path for a Starknet Seed Grant.
+2. **Cairo / Starknet verifier** — Implement this AIR in Cairo so a Starknet contract can verify the proof on-chain
 3. **Solidity Verifier** — On-chain verification contract for Ethereum mainnet
 4. **Performance Optimization** — GPU acceleration + AVX-512 intrinsics to push prover to hardware limits
 5. **Grant submissions** — Starknet Seed Grant package with working prover, tests, and benchmark harness (no ESP submission pending)
@@ -140,6 +138,9 @@ A trace of T rows (the "delay steps" in the table, and `RULE30_STEPS` on the CLI
 - `Containerfile` — Podman/OCI image (Rust 1.91 builder; Winterfell 0.13 needs Rust 1.87+)
 - `docs/` — Binary-tower AIR note (specification only; the shipped prover is the Winterfell prime-field AIR)
 - `artifacts/` — CSV and Markdown written by the benchmark harness
+- `CITATION.cff` — Citation metadata
+- `RELEASING.md` — Release steps for crates.io
+- `.github/workflows/` — CI, and the tag-triggered release workflow
 
 **Build, test, and benchmark** (Rust 1.87+):
 
@@ -153,11 +154,20 @@ cargo bench --bench readme_table
 
 ---
 
-## 🤝 For Investors, Partners & Stakeholders
+## 🧩 Use as a Library
 
-This VDF is a working research prototype: it builds, proves, and verifies. The next steps for a grant are an independent audit and an on-chain verifier, starting with Cairo for Starknet.
+```toml
+[dependencies]
+rule30-vdf = "0.1"
+winterfell = "0.13" # its field type appears in the public inputs
+```
 
-**Contact:**  
+Build a trace with `trace::build_trace`, prove it with `prover::Rule30Prover`, and check the proof with `prover::verify_proof`. A complete prove-and-verify example sits in the crate documentation at the top of [`src/lib.rs`](src/lib.rs), where it runs as a doc test.
+
+---
+
+## 🤝 Contact
+
 Igor Holt  
 Founder, Kovach Enterprises / Genesis Conductor  
 igor@kovachenterprises.com  
@@ -172,21 +182,18 @@ Pasadena, Maryland, USA
 
 ---
 
+## 📚 How to Cite
+
+Citation metadata is in [`CITATION.cff`](CITATION.cff). GitHub's "Cite this repository" button reads it.
+
+---
+
 ## 📜 License
 
-Dual-licensed under MIT OR Apache-2.0. See [LICENSE](LICENSE), [LICENSE-MIT](LICENSE-MIT), and [LICENSE-APACHE](LICENSE-APACHE).
+Dual-licensed under MIT OR Apache-2.0, at your option. See [LICENSE-MIT](LICENSE-MIT) and [LICENSE-APACHE](LICENSE-APACHE).
 
 ---
 
 *Built with conviction that computational irreducibility is not a bug — it is the feature that makes verifiable delay possible.*
 
 **Understanding the Universe • Accelerating Truth • Sovereign Infrastructure**
-
----
-
-**Recent Momentum (May 2026):**  
-Stephen Wolfram’s CIMCAI keynote on computational irreducibility directly validates the foundational assumption of this work. Rule 30 remains one of the cleanest demonstrations that simple rules can generate behavior no shortcut can predict. Our VDF turns that mathematical fact into cryptographic reality.
-
----
-
-*This document and associated codebase position the project for immediate grant applications and partnership discussions.*
