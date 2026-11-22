@@ -27,3 +27,30 @@ jobs:
         run: cargo clippy --all-targets -- -D warnings
       - name: Test
         run: cargo test --release
+
+  msrv:
+    name: test on the minimum supported Rust
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Keep in step with `rust-version` in Cargo.toml.
+      - uses: dtolnay/rust-toolchain@1.87.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Test with the committed lockfile
+        run: cargo test --release --locked
+
+  package:
+    name: docs and crates.io package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build the docs without warnings
+        run: cargo doc --no-deps
+        env:
+          RUSTDOCFLAGS: -D warnings
+      - name: List the files the crate would publish
+        run: cargo package --list --locked
+      - name: Build the crate from its package
+        run: cargo package --locked

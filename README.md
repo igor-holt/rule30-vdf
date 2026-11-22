@@ -140,6 +140,9 @@ A trace of T rows (the "delay steps" in the table, and `RULE30_STEPS` on the CLI
 - `Containerfile` — Podman/OCI image (Rust 1.91 builder; Winterfell 0.13 needs Rust 1.87+)
 - `docs/` — Binary-tower AIR note (specification only; the shipped prover is the Winterfell prime-field AIR)
 - `artifacts/` — CSV and Markdown written by the benchmark harness
+- `CITATION.cff` — Citation metadata
+- `RELEASING.md` — Release steps for crates.io
+- `.github/workflows/` — CI, and the tag-triggered release workflow
 
 **Build, test, and benchmark** (Rust 1.87+):
 
@@ -150,6 +153,18 @@ cargo bench --bench readme_table
 ```
 
 `RULE30_CELLS` (default 64) and `RULE30_STEPS` (default 1024, power of two) configure the CLI. `RULE30_BENCH_STEPS` overrides the benchmark delay list.
+
+---
+
+## 🧩 Use as a Library
+
+```toml
+[dependencies]
+rule30-vdf = "0.1"
+winterfell = "0.13" # its field type appears in the public inputs
+```
+
+Build a trace with `trace::build_trace`, prove it with `prover::Rule30Prover`, and check the proof with `prover::verify_proof`. A complete prove-and-verify example sits in the crate documentation at the top of [`src/lib.rs`](src/lib.rs), where it runs as a doc test.
 
 ---
 
@@ -169,6 +184,12 @@ Pasadena, Maryland, USA
 - Thermodynamic-aware & physics-informed computing  
 - Decentralized AI economies & verifiable computation primitives  
 - Hybridization of human and artificial intelligence through trustless coordination
+
+---
+
+## 📚 How to Cite
+
+Citation metadata is in [`CITATION.cff`](CITATION.cff). GitHub's "Cite this repository" button reads it.
 
 ---
 

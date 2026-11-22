@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata in this file."
+type: software
+title: "rule30-vdf: a verifiable delay function on the Rule 30 cellular automaton with STARK proofs"
+abstract: >-
+  A Rust implementation of a verifiable delay function whose sequential work
+  is the Rule 30 cellular automaton on a periodic ring. A STARK proof,
+  generated and verified with Winterfell, attests that the output follows from
+  the input. Unaudited research prototype.
+authors:
+  - family-names: Holt
+    given-names: Igor
+    orcid: "https://orcid.org/0009-0008-8389-1297"
+    affiliation: "Kovach Enterprises LLC"
+version: 0.1.0
+license:
+  - MIT
+  - Apache-2.0
+repository-code: "https://github.com/igor-holt/rule30-vdf"
+keywords:
+  - verifiable delay function
+  - Rule 30
+  - cellular automaton
+  - STARK
